@@ -1,0 +1,9 @@
+masking:
+  header-keywords:
+    - Authorization
+  payload-keywords:
+    - password
+
+logging:
+  level:
+    com.example.mvc_with_masking_sensitive_info.infrastructure.filter.RequestAndResponseLoggingWithMaskingFilter: DEBUG

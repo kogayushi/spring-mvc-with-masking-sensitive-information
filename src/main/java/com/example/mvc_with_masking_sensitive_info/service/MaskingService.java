@@ -1,4 +1,4 @@
-package com.example.mvc_with_masking_sensitive_info.infrastructure.filter;
+package com.example.mvc_with_masking_sensitive_info.service;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -6,21 +6,21 @@ import java.util.Collections;
 import java.util.List;
 import java.util.regex.Pattern;
 
-public abstract class MaskingSensitiveInformationService {
+public abstract class MaskingService {
 
     protected final List<Pattern> regexToMaskForHeader;
     protected final List<Pattern> regexToMaskForPayload;
 
-    public MaskingSensitiveInformationService(MaskingSensitiveInformationProperties prop) {
+    MaskingService(List<String> headerKeywords, List<String> payloadKeywords) {
         List<Pattern> maskingKeywordsForHeaders = new ArrayList<>();
-        for (String keyword : prop.getHeaderKeywords()) {
+        for (String keyword : headerKeywords) {
             maskingKeywordsForHeaders.add(Pattern.compile(MessageFormat.format("({0}=\\[)([^\\]]+)", keyword), Pattern.CASE_INSENSITIVE));
         }
 
         this.regexToMaskForHeader = Collections.unmodifiableList(maskingKeywordsForHeaders);
 
         List<Pattern> maskingKeywordsForPayload = new ArrayList<>();
-        for (String keyword : prop.getPayloadKeywords()) {
+        for (String keyword : payloadKeywords) {
             String regex = createSpecializedRegexInternal(keyword);
             maskingKeywordsForPayload.add(Pattern.compile(regex, Pattern.CASE_INSENSITIVE));
         }
